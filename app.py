@@ -1,4 +1,3 @@
-
 import streamlit as st
 import fitz
 import io
@@ -55,7 +54,7 @@ if method == "Steganographic Line":
         color = st.color_picker("Bar Color", "#000000")
         rgb_color = tuple(int(color[i:i+2], 16)/255 for i in (1, 3, 5))
 
-# Step 4: Injection
+# Step 4: Injection (Modified for Step 3 for Invisible Prompt and PDF Metadata)
 if uploaded_file and hidden_text.strip():
     pdf_bytes = uploaded_file.read()
 
@@ -65,12 +64,14 @@ if uploaded_file and hidden_text.strip():
                                                   y_fraction=y_fraction,
                                                   width_fraction=width_fraction,
                                                   rgb_color=rgb_color)
+        st.markdown("<h3 style='margin-top: 2em;'>4. Download Modified PDF</h3>", unsafe_allow_html=True)
     elif method == "Invisible Prompt":
         modified_pdf = invisible_prompt(pdf_bytes, hidden_text)
+        st.markdown("<h3 style='margin-top: 2em;'>3. Download Modified PDF</h3>", unsafe_allow_html=True)
     elif method == "PDF Metadata":
         modified_pdf = add_alt_text_prompt(pdf_bytes, hidden_text)
+        st.markdown("<h3 style='margin-top: 2em;'>3. Download Modified PDF</h3>", unsafe_allow_html=True)
 
-    st.markdown("<h3 style='margin-top: 2em;'>4. Download Modified PDF</h3>", unsafe_allow_html=True)
     st.download_button("Download Modified PDF", modified_pdf, "modified_prompt.pdf", mime="application/pdf")
 
     col1, col2 = st.columns(2)
